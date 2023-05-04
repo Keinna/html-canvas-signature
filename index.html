@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Handtekeningveld met Canvas</title>
+	<style>
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<h2>Signature with Canvas</h2>
+	<p>Draw signature:</p>
+	<canvas id="signatureCanvas"></canvas>
+	<br>
+	<button onclick="saveSignature()">Save</button>
+	<img id="signatureImage" src="" style="display: none;">
+	
+	<script>
+		const canvas = document.getElementById("signatureCanvas");
+		const context = canvas.getContext("2d");
+		let isDrawing = false;
+		
+		canvas.addEventListener('mousedown', (event) => {
+			isDrawing = true;
+			context.beginPath();
+			context.moveTo(event.offsetX, event.offsetY);
+		});
+		
+		canvas.addEventListener('mousemove', (event) => {
+			if (isDrawing) {
+				context.lineTo(event.offsetX, event.offsetY);
+				context.stroke();
+			}
+		});
+		
+		canvas.addEventListener('mouseup', () => {
+			isDrawing = false;
+		});
+		
+		function saveSignature() {
+			const signatureImage = document.getElementById("signatureImage");
+			signatureImage.src = canvas.toDataURL();
+			signatureImage.style.display = "inline";
+		}
+	</script>
+</body>
+</html>
